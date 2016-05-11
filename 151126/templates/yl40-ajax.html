@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<table>
+		<tr>
+			<td>Temperature: </td>
+			<td><div id="temp">Click Update Button</div></td>
+			<td><button type="button" onclick="loadTemp()">Update</button></td>
+		</tr>
+	</table>
+<p>
+
+	<table>
+		<tr>
+			<td>Illuminace: </td>
+			<td><div id="illuminance">Click Update Button</div></td>
+			<td><button type="button" onclick="loadIllum()">Update</button></td>
+		</tr>
+	</table>
+<p>
+	<table>
+		<tr>
+			<td>Servo Motor </td>
+		</tr>
+		<tr>
+			<td>Angle:
+				 <input type="radio" name="chk_info" value="0" checked="checked">0 
+			  	 <input type="radio" name="chk_info" value="45">45
+				 <input type="radio" name="chk_info" value="90">90
+			</td>
+			<td><button type="button" onclick="actionMotor()">Action</button></td>
+		</tr>
+	</table>
+<p>
+			
+			
+LED
+<button type="button" onclick="ledOn()">On</button>
+<button type="button" onclick="ledOff()">Off</button>
+
+<script>
+	function loadTemp(){
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function(){
+			if(xhttp.readyState == 4 && xhttp.status == 200){
+				document.getElementById("temp").innerHTML = xhttp.responseText;
+			}
+		};
+		xhttp.open("POST","/ain/2",true);
+		xhttp.send();
+	}
+
+	function loadIllum() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function(){
+			if(xhttp.readyState == 4 && xhttp.status == 200){
+				document.getElementById("illuminance").innerHTML = xhttp.responseText;
+			}
+		};
+		xhttp.open("POST","/ain/0", true);
+		xhttp.send();
+	}
+
+	function actionMotor() {
+		var angle;
+		var xhttp = new XMLHttpRequest();
+
+		var radio = document.getElementsByName("chk_info");
+		for(var i=0; i<3; i++){
+			if(radio[i].checked == true){
+				angle = radio[i].value;
+			}
+		}
+		xhttp.open("POST","/motor/" + angle, true);
+		xhttp.send();
+	}
+
+	function ledOn(){
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST","/aout/255",true);
+		xhttp.send();
+	}
+
+	function ledOff(){
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST","/aout/0",true);
+		xhttp.send();
+	}
+
+</script>
+
+</body>
+</html>	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
